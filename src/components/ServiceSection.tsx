@@ -26,7 +26,7 @@ export function ServiceSection({ section, isReversed }: ServiceSectionProps) {
         </h3>
         <div className="flex flex-col gap-6">
           {section.items.map((item, idx) => (
-            <ServiceItem key={idx} {...item} />
+            <ServiceItem key={idx} {...item} image={section.image} />
           ))}
         </div>
       </div>

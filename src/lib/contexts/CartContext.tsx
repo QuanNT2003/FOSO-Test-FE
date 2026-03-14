@@ -22,6 +22,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     fetchCart();
   }, []);
 
+  const addItem = (item: CartItem) => {
+    setCartItems((prev) => {
+      const exists = prev.find((i) => i.id === item.id);
+      if (exists) {
+        // For services, we might not want to stack quantity unless specified, 
+        // but let's keep it simple and just add it if it doesn't exist or just append.
+        // Given the CartItem type doesn't have quantity itself (variants do), 
+        // we'll just add it.
+        return [...prev, { ...item, id: `${item.id}-${Date.now()}` }];
+      }
+      return [...prev, item];
+    });
+  };
+
   const removeItem = (id: string) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id));
   };
@@ -36,6 +50,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo(() => ({
     cartItems,
     isLoading,
+    addItem,
     removeItem,
     totalPrice,
     itemCount,

@@ -2,6 +2,8 @@ export interface ServiceData {
   name: string;
   description?: string;
   price: string;
+  image?: string;
+  isEffect?: boolean;
 }
 
 export interface SectionData {
