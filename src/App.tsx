@@ -1,6 +1,7 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ServiceComponent } from "@/components/ServiceComponent";
+import { TestimonialComponent } from "@/components/TestimonialComponent";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Header />
 
       <ServiceComponent />
+      <TestimonialComponent />
 
       {/* <main className="flex-1 bg-background py-20">
         <div className="text-center">
