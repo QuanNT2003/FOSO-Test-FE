@@ -3,10 +3,50 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import logo from "@/assets/images/logo.png";
 import bgHeader from "@/assets/images/bg-header.png";
+import { CartModal } from "./CartModal";
+
+const CartButton = ({
+  isSticky = false,
+  isCartOpen = false,
+  onClick,
+}: {
+  isSticky?: boolean;
+  isCartOpen?: boolean;
+  onClick: () => void;
+}) => (
+  <Button
+    variant="ghost"
+    onClick={onClick}
+    className={`${
+      isCartOpen ? "bg-[#FCE48C]! text-[#824C08]!" : "bg-[#824C08]! text-white!"
+    } hover:opacity-90 rounded-md px-4 py-2 flex items-center gap-2 border-none transition-colors ${
+      isSticky ? "h-9 min-w-[140px]" : "px-5 py-3 h-12 min-w-[193px]"
+    }`}
+  >
+    <ShoppingCart
+      className={`h-4 w-4 ${isCartOpen ? "text-[#824C08]" : "text-white"}`}
+    />
+    <span
+      className={`${
+        isSticky ? "text-[10px]" : "text-[11px]"
+      } uppercase tracking-widest font-bold`}
+    >
+      Giỏ hàng
+    </span>
+    <span
+      className={`${
+        isCartOpen ? "bg-[#824C08] text-white" : "bg-white text-[#824C08]"
+      } w-4 h-4 rounded-full text-[9px] flex items-center justify-center font-bold`}
+    >
+      3
+    </span>
+  </Button>
+);
 
 export function Header() {
   const [activeHash, setActiveHash] = useState(window.location.hash || "#home");
   const [isSticky, setIsSticky] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -42,7 +82,7 @@ export function Header() {
     <>
       {/* Sticky Header */}
       <div
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out transform ${
+        className={`fixed top-0 left-0 w-full z-100 transition-all duration-500 ease-in-out transform ${
           isSticky ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         } bg-[#403426] border-b border-white/10 py-3 px-12`}
       >
@@ -50,7 +90,7 @@ export function Header() {
           <div className="flex items-center gap-3">
             <img src={logo} alt="The Om Lounge" className="h-10 w-auto" />
             <div className="flex flex-col">
-              <span className="text-[18px] font-serif tracking-[0.1em] uppercase text-white leading-none">
+              <span className="text-[18px] font-serif tracking-widest uppercase text-white leading-none">
                 The Om
               </span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-white/60">
@@ -79,18 +119,11 @@ export function Header() {
                 English
               </span>
             </div>
-            <Button
-              variant="ghost"
-              className="bg-[#824C08]! text-white hover:text-white rounded-md px-4 py-2 h-9 flex items-center gap-2 border-none min-w-[140px]"
-            >
-              <ShoppingCart className="h-4 w-4" />
-              <span className="text-[10px] uppercase tracking-widest font-bold">
-                Giỏ hàng
-              </span>
-              <span className="bg-white text-[#824C08] w-4 h-4 rounded-full text-[9px] flex items-center justify-center font-bold">
-                3
-              </span>
-            </Button>
+            <CartButton
+              isSticky={true}
+              isCartOpen={isCartOpen}
+              onClick={() => setIsCartOpen(!isCartOpen)}
+            />
           </div>
         </div>
       </div>
@@ -134,18 +167,11 @@ export function Header() {
 
             {/* Right: Cart */}
             <div className="w-1/4 flex justify-end">
-              <Button
-                variant="ghost"
-                className="!bg-[#824C08] !hover:bg-[#824C08]/90 !hover:border-none text-white hover:text-white rounded-md px-5 py-3 h-12 flex items-center justify-center gap-3 border-none ring-0 focus-visible:ring-0 min-w-[193px]"
-              >
-                <ShoppingCart className="h-4 w-4" />
-                <span className="text-[11px] uppercase tracking-[0.2em] font-bold">
-                  Giỏ hàng
-                </span>
-                <span className="bg-white text-[#824C08] w-5 h-5 rounded-full text-[10px] flex items-center justify-center font-bold">
-                  3
-                </span>
-              </Button>
+              <CartButton
+                isSticky={false}
+                isCartOpen={isCartOpen}
+                onClick={() => setIsCartOpen(!isCartOpen)}
+              />
             </div>
           </div>
 
@@ -165,6 +191,9 @@ export function Header() {
             ))}
           </nav>
         </header>
+
+        {/* Cart Modal Integration */}
+        <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       </div>
     </>
   );
