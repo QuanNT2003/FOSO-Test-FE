@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { X, Minus, Plus, ChevronRight, Check } from "lucide-react";
+import { X, Minus, Plus, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TechnicianSelection } from "./TechnicianSelection";
+import { BookingConfirmation } from "./BookingConfirmation";
+import { BookingSuccess } from "./BookingSuccess";
 
 interface CartItem {
   id: string;
@@ -24,7 +27,7 @@ interface CartModalProps {
 }
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
-  const [isSelectingTech, setIsSelectingTech] = useState(false);
+  const [currentView, setCurrentView] = useState<"cart" | "tech" | "confirmation" | "success">("cart");
   const [selectedTech, setSelectedTech] = useState<Technician>({
     id: "1",
     name: "Võ Thị Bích Phượng",
@@ -32,6 +35,39 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
     image:
       "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=50&auto=format&fit=crop",
   });
+
+  const [bookingDate, setBookingDate] = useState("Thứ 7 06/09");
+  const [bookingTime, setBookingTime] = useState("10:00 AM");
+
+  const dates = [
+    { label: "Thứ 5", date: "04/09" },
+    { label: "Thứ 6", date: "05/09" },
+    { label: "Thứ 7", date: "06/09" },
+    { label: "Chủ Nhật", date: "07/09" },
+  ];
+
+  const timeSlots = [
+    "09:00 AM",
+    "09:30 AM",
+    "10:00 AM",
+    "10:30 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:00 PM",
+    "12:30 PM",
+    "01:00 PM",
+    "01:30 PM",
+    "02:00 PM",
+    "02:30 PM",
+    "03:00 PM",
+    "03:30 PM",
+    "04:00 PM",
+    "04:30 PM",
+    "05:00 PM",
+    "05:30 PM",
+    "06:00 PM",
+    "06:30 PM",
+  ];
 
   const technicians: Technician[] = [
     {
@@ -114,12 +150,17 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
 
   if (!isOpen) return null;
 
+  const handleClose = () => {
+    setCurrentView("cart");
+    onClose();
+  };
+
   return (
     <>
       {/* Backdrop */}
       <div
         className="fixed inset-0 z-[80] bg-black/20 backdrop-blur-[2px]"
-        onClick={onClose}
+        onClick={handleClose}
       />
 
       {/* Modal Container */}
@@ -128,13 +169,13 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
       >
         {/* Main Cart View */}
         <div
-          className={`flex flex-col h-full bg-[#FAF5EB] transition-transform duration-300 ${isSelectingTech ? "-translate-x-full" : "translate-x-0"}`}
+          className={`shrink-0 flex flex-col w-[450px] h-full bg-[#FAF5EB] transition-transform duration-300 ${currentView !== "cart" ? "-translate-x-full" : "translate-x-0"}`}
         >
           {/* Header */}
           <div className="p-6 border-b border-[#E5E1DA] text-center relative bg-[#FAF5EB]">
             <h2 className="text-[32px] font-serif text-[#824C08]">Giỏ Hàng</h2>
             <Button
-              onClick={onClose}
+              onClick={handleClose}
               className="absolute right-6 top-1/2 -translate-y-1/2 text-[#824C08]/60 hover:text-[#824C08] border-none! bg-transparent!"
             >
               <X size={24} />
@@ -213,7 +254,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
           {/* Bottom Section */}
           <div className="p-6 bg-[#FAF5EB] border-t border-[#E5E1DA] space-y-6">
             <div
-              onClick={() => setIsSelectingTech(true)}
+              onClick={() => setCurrentView("tech")}
               className="flex items-center justify-between group cursor-pointer"
             >
               <div className="flex items-center gap-3">
@@ -246,7 +287,10 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
               </span>
             </div>
 
-            <Button className="w-full bg-[#824C08]! hover:bg-[#824C08]/90! text-white h-[56px] rounded-sm flex items-center justify-between px-6 group">
+            <Button
+              onClick={() => setCurrentView("confirmation")}
+              className="w-full bg-[#824C08]! hover:bg-[#824C08]/90! text-white h-[56px] rounded-sm flex items-center justify-between px-6 group"
+            >
               <span className="text-[15px] font-bold uppercase tracking-widest">
                 Tiếp Tục
               </span>
@@ -259,62 +303,36 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
         </div>
 
         {/* Technician Selection View */}
-        <div
-          className={`absolute inset-0 flex flex-col h-full bg-[#FAF5EB] transition-transform duration-300 ${isSelectingTech ? "translate-x-0" : "translate-x-full"}`}
-        >
-          {/* Header */}
-          <div className="p-6 border-b border-[#E5E1DA] text-center relative">
-            <Button
-              onClick={() => setIsSelectingTech(false)}
-              className="bg-transparent! absolute left-6 top-1/2 -translate-y-1/2 text-[#824C08]/60 hover:text-[#824C08]"
-            >
-              <ChevronRight size={24} className="rotate-180" />
-            </Button>
-            <h2 className="text-[24px] font-serif text-[#824C08]">
-              Chọn nhân viên
-            </h2>
-          </div>
+        <TechnicianSelection
+          isVisible={currentView === "tech"}
+          isConfirmationActive={currentView === "confirmation" || currentView === "success"}
+          onBack={() => setCurrentView("cart")}
+          technicians={technicians}
+          selectedTech={selectedTech}
+          onSelect={(tech) => {
+            setSelectedTech(tech);
+            setCurrentView("cart");
+          }}
+          onConfirm={() => setCurrentView("confirmation")}
+        />
 
-          {/* List of Technicians */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-2">
-            {technicians.map((tech) => (
-              <div
-                key={tech.id}
-                onClick={() => {
-                  setSelectedTech(tech);
-                  setIsSelectingTech(false);
-                }}
-                className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition-colors ${selectedTech.id === tech.id ? "bg-[#824C08]/10 border border-[#824C08]/20" : "hover:bg-black/5"}`}
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={tech.image}
-                    alt={tech.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div>
-                    <h3 className="text-[15px] font-bold text-[#282626]">
-                      {tech.name}
-                    </h3>
-                    <p className="text-[13px] text-[#282626]/60">{tech.role}</p>
-                  </div>
-                </div>
-                {selectedTech.id === tech.id && (
-                  <Check size={20} className="text-[#824C08]" />
-                )}
-              </div>
-            ))}
-          </div>
+        {/* Booking Confirmation View */}
+        <BookingConfirmation
+          isVisible={currentView === "confirmation"}
+          onBack={() => setCurrentView("cart")}
+          dates={dates}
+          bookingDate={bookingDate}
+          onDateSelect={setBookingDate}
+          timeSlots={timeSlots}
+          bookingTime={bookingTime}
+          onTimeSelect={setBookingTime}
+          onConfirm={() => setCurrentView("success")}
+        />
 
-          <div className="p-6 border-t border-[#E5E1DA]">
-            <Button
-              onClick={() => setIsSelectingTech(false)}
-              className="w-full bg-[#824C08]! text-white h-[50px] rounded-sm font-bold uppercase tracking-widest"
-            >
-              Xác nhận
-            </Button>
-          </div>
-        </div>
+        {/* Success State */}
+        {currentView === "success" && (
+          <BookingSuccess onClose={handleClose} />
+        )}
       </div>
     </>
   );
