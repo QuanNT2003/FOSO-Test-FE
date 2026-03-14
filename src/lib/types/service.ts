@@ -1,9 +1,11 @@
 export interface ServiceData {
+  id: string;
   name: string;
   description?: string;
   price: string;
   image?: string;
   isEffect?: boolean;
+  sectionId?: string;
 }
 
 export interface SectionData {

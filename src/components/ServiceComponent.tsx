@@ -6,7 +6,9 @@ import type { SectionData } from "@/lib/types/service";
 import { ServiceService } from "@/lib/services/service.service";
 
 export function ServiceComponent() {
-  const [categories, setCategories] = useState<{ label: string; href: string }[]>([]);
+  const [categories, setCategories] = useState<
+    { label: string; href: string }[]
+  >([]);
   const [serviceSections, setServiceSections] = useState<SectionData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -19,6 +21,7 @@ export function ServiceComponent() {
         ]);
         setCategories(cats);
         setServiceSections(sections);
+        console.log(sections);
       } catch (error) {
         console.error("Failed to fetch service data:", error);
       } finally {

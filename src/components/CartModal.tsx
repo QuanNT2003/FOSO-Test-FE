@@ -18,7 +18,12 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [dates, setDates] = useState<BookingDate[]>([]);
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
   const [selectedTech, setSelectedTech] = useState<Technician | null>(null);
-  const { cartItems, isLoading: isCartLoading, removeItem, totalPrice } = useCart();
+  const {
+    cartItems,
+    isLoading: isCartLoading,
+    removeItem,
+    totalPrice,
+  } = useCart();
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   useEffect(() => {
@@ -32,7 +37,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
         setTechnicians(techs);
         setDates(bDates);
         setTimeSlots(slots);
-        
+
         if (techs.length > 0) {
           setSelectedTech(techs[0]);
         }
@@ -103,10 +108,10 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
               </div>
             ) : (
               cartItems.map((item) => (
-                <CartItemComponent 
-                  key={item.id} 
-                  item={item} 
-                  onRemove={removeItem} 
+                <CartItemComponent
+                  key={item.id}
+                  item={item}
+                  onRemove={removeItem}
                 />
               ))
             )}
@@ -169,7 +174,9 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
         {/* Technician Selection View */}
         <TechnicianSelection
           isVisible={currentView === "tech"}
-          isConfirmationActive={currentView === "confirmation" || currentView === "success"}
+          isConfirmationActive={
+            currentView === "confirmation" || currentView === "success"
+          }
           onBack={() => setCurrentView("cart")}
           technicians={technicians}
           selectedTech={selectedTech!}
@@ -196,9 +203,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
         />
 
         {/* Success State */}
-        {currentView === "success" && (
-          <BookingSuccess onClose={handleClose} />
-        )}
+        {currentView === "success" && <BookingSuccess onClose={handleClose} />}
       </div>
     </>
   );

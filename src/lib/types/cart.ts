@@ -1,5 +1,5 @@
 export interface CartItemVariant {
-  id: string; // Added to uniquely identify variant if needed
+  id: string;
   image: string;
   name: string;
   quantity: number;
@@ -12,6 +12,7 @@ export interface CartItem {
   price: number;
   image: string;
   duration?: string;
+  sectionId?: string;
   variants?: CartItemVariant[];
 }
 
@@ -31,6 +32,7 @@ export interface CartContextType {
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   addVariant: (itemId: string, variant: CartItemVariant) => void;
+  removeVariant: (itemId: string, variantId: string) => void;
   updateVariantQuantity: (itemId: string, variantId: string, delta: number) => void;
   totalPrice: number;
   itemCount: number;

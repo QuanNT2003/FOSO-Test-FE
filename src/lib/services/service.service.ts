@@ -6,20 +6,26 @@ import pedicureImg from "@/assets/images/image_pedicure.png";
 import effectImg from "@/assets/images/image_filter.png";
 import drinksImg from "@/assets/images/image_drink.jpg";
 
-const standardItems = Array(4).fill({
-  name: "Perfectly Polished",
-  description: "Làm môi màu sắc (Mani hoặc Pedi)...",
-  price: "390",
-});
+const makeStandardItems = (sectionId: string) =>
+  Array(4)
+    .fill(null)
+    .map((_, idx) => ({
+      id: `${sectionId}-item-${idx + 1}`,
+      name: "Perfectly Polished",
+      description: "Làm môi màu sắc (Mani hoặc Pedi)...",
+      price: "390",
+      sectionId,
+    }));
 
-const drinkItems = [
-  { name: "Latte", price: "50" },
-  { name: "Espresso", price: "50" },
-  { name: "Americano", price: "50" },
-  { name: "Cappuccino", price: "50" },
-  { name: "Milkshake", price: "50" },
-  { name: "Juice", price: "50" },
-];
+const makeDrinkItems = (sectionId: string) =>
+  [
+    { name: "Latte", price: "50" },
+    { name: "Espresso", price: "50" },
+    { name: "Americano", price: "50" },
+    { name: "Cappuccino", price: "50" },
+    { name: "Milkshake", price: "50" },
+    { name: "Juice", price: "50" },
+  ].map((item, idx) => ({ id: `${sectionId}-item-${idx + 1}`, ...item, sectionId }));
 
 export const ServiceService = {
   async getCategories() {
@@ -37,31 +43,31 @@ export const ServiceService = {
         id: "combo",
         title: "Gói Combo",
         image: comboImg,
-        items: standardItems,
+        items: makeStandardItems("combo"),
       },
       {
         id: "medicure",
         title: "Medicure",
         image: medicureImg,
-        items: standardItems,
+        items: makeStandardItems("medicure"),
       },
       {
         id: "pedicure",
         title: "Pedicure",
         image: pedicureImg,
-        items: standardItems,
+        items: makeStandardItems("pedicure"),
       },
       {
         id: "effect",
         title: "Hiệu Ứng",
         image: effectImg,
-        items: standardItems,
+        items: makeStandardItems("effect"),
       },
       {
         id: "drinks",
         title: "Drinks",
         image: drinksImg,
-        items: drinkItems,
+        items: makeDrinkItems("drinks"),
       },
     ]);
   },
