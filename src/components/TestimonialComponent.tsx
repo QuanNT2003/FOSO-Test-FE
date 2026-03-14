@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TestimonialItem } from "./TestimonialItem";
 import type { TestimonialData } from "@/lib/types/testimonial";
-import bgComment from "@/assets/images/bg-comment.png";
+import bgComment from "@/assets/images/bg-service.png";
 
 // Import generated images
 import customer1 from "@/assets/images/comment_thuydo2.png";
