@@ -26,7 +26,13 @@ export function AppointmentComponent() {
           Đến The OM Lounge để xả stress và làm mới mình. Vẻ đẹp bắt đầu từ những
           điều nhỏ nhất và lan tỏa đến cả tâm hồn.
         </p>
-        <button className="mt-4 bg-white text-[#523C14] px-10 py-4 font-semibold uppercase tracking-widest hover:bg-white/90 transition-all duration-300 rounded-none cursor-pointer">
+        <button 
+          onClick={() => {
+            console.log("Navigating to booking...");
+            window.location.hash = "#services";
+          }}
+          className="mt-4 bg-white text-[#523C14] px-10 py-4 font-semibold uppercase tracking-widest hover:bg-white/90 transition-all duration-300 rounded-none cursor-pointer"
+        >
           Trải nghiệm ngay
         </button>
       </div>

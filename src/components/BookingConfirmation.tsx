@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { BookingConfirmationProps } from "@/lib/types/booking";
+import { BookingService } from "@/lib/services/booking.service";
 
 export function BookingConfirmation({
   isVisible,
@@ -12,7 +14,27 @@ export function BookingConfirmation({
   bookingTime,
   onTimeSelect,
   onConfirm,
+  cartItems,
+  selectedTech,
 }: BookingConfirmationProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleConfirm = async () => {
+    setIsSubmitting(true);
+    try {
+      await BookingService.confirmBooking({
+        bookingDate,
+        bookingTime,
+        items: cartItems,
+        technician: selectedTech,
+      });
+      onConfirm();
+    } catch (error) {
+      console.error("Booking failed:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div
       className={`absolute inset-0 flex flex-col w-[450px] h-full bg-[#FAF5EB] transition-transform duration-300 ${
@@ -124,16 +146,19 @@ export function BookingConfirmation({
       {/* Footer Action */}
       <div className="p-6 border-t border-[#E5E1DA]">
         <Button
-          onClick={onConfirm}
-          className="w-full bg-[#824C08]! text-white h-[56px] rounded-sm flex items-center justify-center gap-3 group"
+          onClick={handleConfirm}
+          disabled={isSubmitting}
+          className="w-full bg-[#824C08]! text-white h-[56px] rounded-sm flex items-center justify-center gap-3 group disabled:opacity-50"
         >
           <span className="text-[15px] font-bold uppercase tracking-widest">
-            Đặt Lịch
+            {isSubmitting ? "Đang xử lý..." : "Đặt Lịch"}
           </span>
-          <ChevronRight
-            size={20}
-            className="group-hover:translate-x-1 transition-transform"
-          />
+          {!isSubmitting && (
+            <ChevronRight
+              size={20}
+              className="group-hover:translate-x-1 transition-transform"
+            />
+          )}
         </Button>
       </div>
     </div>

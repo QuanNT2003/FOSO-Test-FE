@@ -1,45 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TestimonialItem } from "./TestimonialItem";
 import type { TestimonialData } from "@/lib/types/testimonial";
+import { TestimonialService } from "@/lib/services/testimonial.service";
 import bgComment from "@/assets/images/bg-service.png";
 
-// Import generated images
-import customer1 from "@/assets/images/comment_thuydo2.png";
-import customer2 from "@/assets/images/comment_thuydo.png";
-import customer3 from "@/assets/images/comment_johndoe.png";
-import avatar1 from "@/assets/images/avatar_thuydo2.png";
-import avatar2 from "@/assets/images/avatar_thuydo.png";
-import avatar3 from "@/assets/images/avatar_johndoe.png";
-
 export function TestimonialComponent() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const testimonials: TestimonialData[] = [
-    {
-      id: "1",
-      name: "Thuỳ Đỗ",
-      avatar: avatar1,
-      image: customer1,
-      comment:
-        "Mỗi lần ghé The OM Lounge là một lần mình tự thưởng cho bản thân. Mình rất thích không gian ở đây, vừa sang trọng vừa ấm cúng. Bộ nail thì khỏi chê luôn, nhân viên tay nghề rất cao và vô cùng tỉ mỉ.",
-    },
-    {
-      id: "2",
-      name: "Thuỳ Đỗ",
-      avatar: avatar2,
-      image: customer2,
-      comment:
-        "Mỗi lần ghé The OM Lounge là một lần mình tự thưởng cho bản thân. Mình rất thích không gian ở đây, vừa sang trọng vừa ấm cúng. Bộ nail thì khỏi chê luôn, nhân viên tay nghề rất cao và vô cùng tỉ mỉ.",
-    },
-    {
-      id: "3",
-      name: "John Doe",
-      avatar: avatar3,
-      image: customer3,
-      comment:
-        "Mỗi lần ghé The OM Lounge là một lần mình tự thưởng cho bản thân. Mình rất thích không gian ở đây, vừa sang trọng vừa ấm cúng. Bộ nail thì khỏi chê luôn, nhân viên tay nghề rất cao và vô cùng tỉ mỉ.",
-    },
-  ];
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const data = await TestimonialService.getTestimonials();
+        setTestimonials(data);
+        // Default active index to center if possible
+        if (data.length > 0) {
+          setActiveIndex(Math.floor(data.length / 2));
+        }
+      } catch (error) {
+        console.error("Failed to fetch testimonials:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   return (
     <section className="relative w-full py-24 px-[96px] overflow-hidden">
@@ -67,56 +54,68 @@ export function TestimonialComponent() {
 
         {/* Testimonials Carousel Track */}
         <div className="relative overflow-visible min-h-[600px] flex items-end">
-          <div
-            className="flex transition-transform duration-700 ease-in-out w-full"
-            style={{
-              transform: `translateX(${(Math.floor(testimonials.length / 2) - activeIndex) * (100 / testimonials.length)}%)`,
-            }}
-          >
-            {testimonials.map((t, idx) => {
-              const isActive = idx === activeIndex;
-              return (
-                <div key={t.id} className="w-1/3 shrink-0 px-6">
-                  <TestimonialItem
-                    testimonial={t}
-                    className={`transition-all duration-700 cursor-pointer ${
-                      isActive
-                        ? "mb-16 scale-110 origin-bottom opacity-100 z-20"
-                        : "mb-0 scale-90 opacity-60 hover:opacity-80 z-10"
-                    }`}
-                    onClick={() => setActiveIndex(idx)}
-                  />
-                </div>
-              );
-            })}
-          </div>
+          {isLoading ? (
+            <div className="w-full flex justify-center py-20">
+              <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+            </div>
+          ) : testimonials.length === 0 ? (
+            <div className="w-full text-center text-white/60 py-20">
+              No testimonials available at this time.
+            </div>
+          ) : (
+            <div
+              className={`flex transition-transform duration-700 ease-in-out w-full`}
+              style={{
+                transform: `translateX(${(Math.floor(testimonials.length / 2) - activeIndex) * (100 / testimonials.length)}%)`,
+              }}
+            >
+              {testimonials.map((t, idx) => {
+                const isActive = idx === activeIndex;
+                return (
+                  <div key={t.id} className="w-1/3 shrink-0 px-6">
+                    <TestimonialItem
+                      testimonial={t}
+                      className={`transition-all duration-700 cursor-pointer ${
+                        isActive
+                          ? "mb-16 scale-110 origin-bottom opacity-100 z-20"
+                          : "mb-0 scale-90 opacity-60 hover:opacity-80 z-10"
+                      }`}
+                      onClick={() => setActiveIndex(idx)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Pagination Dots */}
-        <div className="flex justify-center items-center gap-6 mt-12">
-          {testimonials.map((_, idx) => (
-            <div
-              key={idx}
-              onClick={() => setActiveIndex(idx)}
-              className="p-0 bg-transparent border-none cursor-pointer flex items-center justify-center w-8 h-8 transition-all duration-300"
-              aria-label={`Go to slide ${idx + 1}`}
-            >
+        {!isLoading && testimonials.length > 0 && (
+          <div className="flex justify-center items-center gap-6 mt-12">
+            {testimonials.map((_, idx) => (
               <div
-                className={`relative flex items-center justify-center w-6 h-6  transition-all duration-300 ${
-                  idx === activeIndex
-                    ? "rounded-full border"
-                    : "border-white/20 hover:border-white/40 "
-                }`}
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className="p-0 bg-transparent border-none cursor-pointer flex items-center justify-center w-8 h-8 transition-all duration-300"
+                aria-label={`Go to slide ${idx + 1}`}
               >
                 <div
-                  className={`rounded-full bg-white transition-all duration-300 w-1.5 h-1.5 ${
-                    idx === activeIndex ? "" : " opacity-40"
+                  className={`relative flex items-center justify-center w-6 h-6  transition-all duration-300 ${
+                    idx === activeIndex
+                      ? "rounded-full border"
+                      : "border-white/20 hover:border-white/40 "
                   }`}
-                />
+                >
+                  <div
+                    className={`rounded-full bg-white transition-all duration-300 w-1.5 h-1.5 ${
+                      idx === activeIndex ? "" : " opacity-40"
+                    }`}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

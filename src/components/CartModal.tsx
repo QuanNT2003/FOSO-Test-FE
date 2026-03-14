@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, Minus, Plus, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TechnicianSelection } from "./TechnicianSelection";
@@ -7,80 +7,46 @@ import { BookingSuccess } from "./BookingSuccess";
 import type { CartItem, CartModalProps } from "@/lib/types/cart";
 import type { Technician } from "@/lib/types/technician";
 import type { BookingDate, BookingView } from "@/lib/types/booking";
+import { TechnicianService } from "@/lib/services/technician.service";
+import { BookingService } from "@/lib/services/booking.service";
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [currentView, setCurrentView] = useState<BookingView>("cart");
-  const [selectedTech, setSelectedTech] = useState<Technician>({
-    id: "1",
-    name: "Võ Thị Bích Phượng",
-    role: "Kỹ thuật viên chuyên nghiệp",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=50&auto=format&fit=crop",
-  });
+  const [technicians, setTechnicians] = useState<Technician[]>([]);
+  const [dates, setDates] = useState<BookingDate[]>([]);
+  const [timeSlots, setTimeSlots] = useState<string[]>([]);
+  const [selectedTech, setSelectedTech] = useState<Technician | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBookingData = async () => {
+      try {
+        const [techs, bDates, slots] = await Promise.all([
+          TechnicianService.getTechnicians(),
+          BookingService.getBookingDates(),
+          BookingService.getTimeSlots(),
+        ]);
+        setTechnicians(techs);
+        setDates(bDates);
+        setTimeSlots(slots);
+        
+        if (techs.length > 0) {
+          setSelectedTech(techs[0]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch booking data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isOpen) {
+      fetchBookingData();
+    }
+  }, [isOpen]);
 
   const [bookingDate, setBookingDate] = useState("Thứ 7 06/09");
   const [bookingTime, setBookingTime] = useState("10:00 AM");
-
-  const dates: BookingDate[] = [
-    { label: "Thứ 5", date: "04/09" },
-    { label: "Thứ 6", date: "05/09" },
-    { label: "Thứ 7", date: "06/09" },
-    { label: "Chủ Nhật", date: "07/09" },
-  ];
-
-  const timeSlots = [
-    "09:00 AM",
-    "09:30 AM",
-    "10:00 AM",
-    "10:30 AM",
-    "11:00 AM",
-    "11:30 AM",
-    "12:00 PM",
-    "12:30 PM",
-    "01:00 PM",
-    "01:30 PM",
-    "02:00 PM",
-    "02:30 PM",
-    "03:00 PM",
-    "03:30 PM",
-    "04:00 PM",
-    "04:30 PM",
-    "05:00 PM",
-    "05:30 PM",
-    "06:00 PM",
-    "06:30 PM",
-  ];
-
-  const technicians: Technician[] = [
-    {
-      id: "1",
-      name: "Võ Thị Bích Phượng",
-      role: "Kỹ thuật viên chuyên nghiệp",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=50&auto=format&fit=crop",
-    },
-    {
-      id: "2",
-      name: "Nguyễn Minh Anh",
-      role: "Chuyên gia làm móng",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=50&auto=format&fit=crop",
-    },
-    {
-      id: "3",
-      name: "Trần Thị Lan",
-      role: "Kỹ thuật viên Massage",
-      image:
-        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=50&auto=format&fit=crop",
-    },
-    {
-      id: "4",
-      name: "Phạm Hồng Nhung",
-      role: "Kỹ thuật viên chăm sóc da",
-      image:
-        "https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=50&auto=format&fit=crop",
-    },
-  ];
 
   const cartItems: CartItem[] = [
     {
@@ -153,6 +119,11 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
         <div
           className={`shrink-0 flex flex-col w-[450px] h-full bg-[#FAF5EB] transition-transform duration-300 ${currentView !== "cart" ? "-translate-x-full" : "translate-x-0"}`}
         >
+          {isLoading && (
+            <div className="absolute inset-0 z-100 bg-[#FAF5EB]/80 flex items-center justify-center">
+              <div className="w-10 h-10 border-4 border-[#824C08]/20 border-t-[#824C08] rounded-full animate-spin"></div>
+            </div>
+          )}
           {/* Header */}
           <div className="p-6 border-b border-[#E5E1DA] text-center relative bg-[#FAF5EB]">
             <h2 className="text-[32px] font-serif text-[#824C08]">Giỏ Hàng</h2>
@@ -243,16 +214,18 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                 <span className="text-[14px] text-[#282626]/40">
                   Kỹ thuật viên
                 </span>
-                <div className="flex items-center gap-2">
-                  <img
-                    src={selectedTech.image}
-                    alt={selectedTech.name}
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  <span className="text-[14px] font-bold text-[#282626]">
-                    {selectedTech.name}
-                  </span>
-                </div>
+                {selectedTech && (
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={selectedTech.image}
+                      alt={selectedTech.name}
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <span className="text-[14px] font-bold text-[#282626]">
+                      {selectedTech.name}
+                    </span>
+                  </div>
+                )}
               </div>
               <ChevronRight
                 size={18}
@@ -290,7 +263,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
           isConfirmationActive={currentView === "confirmation" || currentView === "success"}
           onBack={() => setCurrentView("cart")}
           technicians={technicians}
-          selectedTech={selectedTech}
+          selectedTech={selectedTech!}
           onSelect={(tech) => {
             setSelectedTech(tech);
             setCurrentView("cart");
@@ -309,6 +282,8 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
           bookingTime={bookingTime}
           onTimeSelect={setBookingTime}
           onConfirm={() => setCurrentView("success")}
+          cartItems={cartItems}
+          selectedTech={selectedTech!}
         />
 
         {/* Success State */}

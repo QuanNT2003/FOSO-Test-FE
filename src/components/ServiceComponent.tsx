@@ -1,14 +1,34 @@
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import bgService from "@/assets/images/bg-service.png";
-import comboImg from "@/assets/images/image_combo.jpg";
-import medicureImg from "@/assets/images/image_medicure.png";
-import pedicureImg from "@/assets/images/image_pedicure.png";
-import effectImg from "@/assets/images/image_filter.png";
-import drinksImg from "@/assets/images/image_drink.jpg";
 import { ServiceSection } from "./ServiceSection";
 import type { SectionData } from "@/lib/types/service";
+import { ServiceService } from "@/lib/services/service.service";
 
 export function ServiceComponent() {
+  const [categories, setCategories] = useState<{ label: string; href: string }[]>([]);
+  const [serviceSections, setServiceSections] = useState<SectionData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [cats, sections] = await Promise.all([
+          ServiceService.getCategories(),
+          ServiceService.getServiceSections(),
+        ]);
+        setCategories(cats);
+        setServiceSections(sections);
+      } catch (error) {
+        console.error("Failed to fetch service data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const scrollToSection = (
     e: React.MouseEvent<HTMLAnchorElement>,
     id: string,
@@ -19,61 +39,6 @@ export function ServiceComponent() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const categories = [
-    { label: "GÓI COMBO", href: "#combo" },
-    { label: "MEDICURE", href: "#medicure" },
-    { label: "PEDICURE", href: "#pedicure" },
-    { label: "HIỆU ỨNG", href: "#effect" },
-  ];
-
-  const standardItems = Array(4).fill({
-    name: "Perfectly Polished",
-    description: "Làm môi màu sắc (Mani hoặc Pedi)...",
-    price: "390",
-  });
-
-  const drinkItems = [
-    { name: "Latte", price: "50" },
-    { name: "Espresso", price: "50" },
-    { name: "Americano", price: "50" },
-    { name: "Cappuccino", price: "50" },
-    { name: "Milkshake", price: "50" },
-    { name: "Juice", price: "50" },
-  ];
-
-  const serviceSections: SectionData[] = [
-    {
-      id: "combo",
-      title: "Gói Combo",
-      image: comboImg,
-      items: standardItems,
-    },
-    {
-      id: "medicure",
-      title: "Medicure",
-      image: medicureImg,
-      items: standardItems,
-    },
-    {
-      id: "pedicure",
-      title: "Pedicure",
-      image: pedicureImg,
-      items: standardItems,
-    },
-    {
-      id: "effect",
-      title: "Hiệu Ứng",
-      image: effectImg,
-      items: standardItems,
-    },
-    {
-      id: "drinks",
-      title: "Drinks",
-      image: drinksImg,
-      items: drinkItems,
-    },
-  ];
 
   return (
     <section className="relative w-full">
@@ -142,13 +107,19 @@ export function ServiceComponent() {
 
             {/* Service Sections */}
             <div className="flex flex-col gap-16">
-              {serviceSections.map((section, idx) => (
-                <ServiceSection
-                  key={section.id}
-                  section={section}
-                  isReversed={idx % 2 !== 0}
-                />
-              ))}
+              {isLoading ? (
+                <div className="flex items-center justify-center py-20">
+                  <div className="w-12 h-12 border-4 border-white/20 border-t-[#E1C084] rounded-full animate-spin"></div>
+                </div>
+              ) : (
+                serviceSections.map((section, idx) => (
+                  <ServiceSection
+                    key={section.id}
+                    section={section}
+                    isReversed={idx % 2 !== 0}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>

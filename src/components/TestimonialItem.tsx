@@ -13,7 +13,7 @@ export function TestimonialItem({
       {/* Image Container with Hanging Quote */}
       <div className="relative">
         {/* Main Image Container */}
-        <div className="aspect-[3/4] overflow-hidden rounded-sm shadow-xl">
+        <div className="aspect-3/4 overflow-hidden rounded-sm shadow-xl">
           <img
             src={testimonial.image}
             alt={testimonial.name}

@@ -1,10 +1,18 @@
 import type { Technician } from "./technician";
+import type { CartItem } from "./cart";
 
 export type BookingView = "cart" | "tech" | "confirmation" | "success";
 
 export interface BookingDate {
   label: string;
   date: string;
+}
+
+export interface BookingSubmission {
+  bookingDate: string;
+  bookingTime: string;
+  items: CartItem[];
+  technician: Technician;
 }
 
 export interface BookingConfirmationProps {
@@ -17,6 +25,8 @@ export interface BookingConfirmationProps {
   bookingTime: string;
   onTimeSelect: (time: string) => void;
   onConfirm: () => void;
+  cartItems: CartItem[];
+  selectedTech: Technician;
 }
 
 export interface BookingSuccessProps {
