@@ -16,17 +16,18 @@ export function Header() {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative h-[500px] w-full overflow-hidden">
       {/* Background Overlay */}
-      <div className="absolute inset-0 z-0 h-[80vh]">
+      <div className="absolute inset-0 z-0">
         <img
           src={bgHeader}
           alt="Spa Header Background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#282626]/35"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#291E0A]/20"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#291E0A]/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-[#28262659]"></div>
+        {/* Soft Buffer Zone Transition */}
+        <div className="absolute inset-x-0 bottom-0 h-[10px] bg-[#523C14]"></div>
+        <div className="absolute inset-x-0 bottom-[10px] h-[150px] bg-linear-to-t from-[#523C14] to-transparent"></div>
       </div>
 
       <header className="relative z-50 w-full pt-8 px-12 min-h-[300px]">
