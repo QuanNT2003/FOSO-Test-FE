@@ -104,13 +104,13 @@ export function Header() {
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logo} alt="The Om Lounge" className="h-10 w-auto" />
-            <div className="flex flex-col justify-center">
-              <span className="text-[18px] font-serif tracking-widest uppercase text-white leading-none">
+            <div className="flex flex-col">
+              <div className="text-[18px] font-serif tracking-widest uppercase text-white leading-none">
                 The Om
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/60">
+              </div>
+              <div className="text-[10px] text-center uppercase tracking-[0.2em] text-white/60">
                 Lounge
-              </span>
+              </div>
             </div>
           </div>
 
@@ -176,11 +176,11 @@ export function Header() {
             {/* Center: Brand Logo */}
             <div className="flex items-center gap-4">
               <img src={logo} alt="The Om Lounge" className="h-16 w-auto" />
-              <div className="text-left flex flex-col justify-center">
+              <div className="text-left flex flex-col">
                 <div className="text-[36px] font-serif tracking-[0.2em] uppercase font-light text-white leading-none">
                   The Om
                 </div>
-                <div className="text-[16px] uppercase tracking-[0.4em] text-white/60">
+                <div className="text-[16px] text-center uppercase tracking-[0.4em] text-white/60">
                   Lounge
                 </div>
               </div>
