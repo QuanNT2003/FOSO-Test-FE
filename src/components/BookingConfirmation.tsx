@@ -1,17 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface BookingConfirmationProps {
-  isVisible: boolean;
-  onBack: () => void;
-  dates: { label: string; date: string }[];
-  bookingDate: string;
-  onDateSelect: (date: string) => void;
-  timeSlots: string[];
-  bookingTime: string;
-  onTimeSelect: (time: string) => void;
-  onConfirm: () => void;
-}
+import type { BookingConfirmationProps } from "@/lib/types/booking";
 
 export function BookingConfirmation({
   isVisible,

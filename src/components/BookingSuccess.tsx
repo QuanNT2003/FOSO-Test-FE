@@ -1,9 +1,6 @@
 import { X, Check, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface BookingSuccessProps {
-  onClose: () => void;
-}
+import type { BookingSuccessProps } from "@/lib/types/booking";
 
 export function BookingSuccess({ onClose }: BookingSuccessProps) {
   return (

@@ -1,10 +1,5 @@
 import { ServiceItem } from "./ServiceItem";
-import type { SectionData } from "@/lib/types/service";
-
-interface ServiceSectionProps {
-  section: SectionData;
-  isReversed: boolean;
-}
+import type { ServiceSectionProps } from "@/lib/types/service";
 
 export function ServiceSection({ section, isReversed }: ServiceSectionProps) {
   return (
@@ -13,13 +8,15 @@ export function ServiceSection({ section, isReversed }: ServiceSectionProps) {
       className={`flex flex-col md:flex-row items-stretch gap-[96px] pt-[48px] ${isReversed ? "md:flex-row-reverse" : ""}`}
     >
       {/* Image Column */}
-      <div className="w-full md:w-1/2 overflow-hidden rounded-sm shadow-2xl relative group min-h-[400px]">
-        <img
-          src={section.image}
-          alt={section.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+      <div className="w-full md:w-1/2 md:relative overflow-hidden rounded-sm shadow-2xl group min-h-[300px] md:min-h-0">
+        <div className="md:absolute md:inset-0 w-full h-full">
+          <img
+            src={section.image}
+            alt={section.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500"></div>
+        </div>
       </div>
 
       {/* Content Column */}

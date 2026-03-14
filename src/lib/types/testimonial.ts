@@ -6,3 +6,9 @@ export interface TestimonialData {
   image: string;
   isFeatured?: boolean;
 }
+
+export interface TestimonialItemProps {
+  testimonial: TestimonialData;
+  className?: string;
+  onClick?: () => void;
+}

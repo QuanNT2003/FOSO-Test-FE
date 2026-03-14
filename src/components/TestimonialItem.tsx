@@ -1,10 +1,4 @@
-import type { TestimonialData } from "@/lib/types/testimonial";
-
-interface TestimonialItemProps {
-  testimonial: TestimonialData;
-  className?: string;
-  onClick?: () => void;
-}
+import type { TestimonialItemProps } from "@/lib/types/testimonial";
 
 export function TestimonialItem({
   testimonial,

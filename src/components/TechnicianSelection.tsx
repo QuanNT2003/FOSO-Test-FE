@@ -1,22 +1,6 @@
 import { Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-interface Technician {
-  id: string;
-  name: string;
-  image: string;
-  role: string;
-}
-
-interface TechnicianSelectionProps {
-  isVisible: boolean;
-  isConfirmationActive: boolean;
-  onBack: () => void;
-  technicians: Technician[];
-  selectedTech: Technician;
-  onSelect: (tech: Technician) => void;
-  onConfirm: () => void;
-}
+import type { TechnicianSelectionProps } from "@/lib/types/booking";
 
 export function TechnicianSelection({
   isVisible,

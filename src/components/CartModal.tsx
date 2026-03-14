@@ -4,30 +4,12 @@ import { Button } from "@/components/ui/button";
 import { TechnicianSelection } from "./TechnicianSelection";
 import { BookingConfirmation } from "./BookingConfirmation";
 import { BookingSuccess } from "./BookingSuccess";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  duration?: string;
-  variants?: { image: string; name: string; quantity: number }[];
-}
-
-interface Technician {
-  id: string;
-  name: string;
-  image: string;
-  role: string;
-}
-
-interface CartModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { CartItem, CartModalProps } from "@/lib/types/cart";
+import type { Technician } from "@/lib/types/technician";
+import type { BookingDate, BookingView } from "@/lib/types/booking";
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
-  const [currentView, setCurrentView] = useState<"cart" | "tech" | "confirmation" | "success">("cart");
+  const [currentView, setCurrentView] = useState<BookingView>("cart");
   const [selectedTech, setSelectedTech] = useState<Technician>({
     id: "1",
     name: "Võ Thị Bích Phượng",
@@ -39,7 +21,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [bookingDate, setBookingDate] = useState("Thứ 7 06/09");
   const [bookingTime, setBookingTime] = useState("10:00 AM");
 
-  const dates = [
+  const dates: BookingDate[] = [
     { label: "Thứ 5", date: "04/09" },
     { label: "Thứ 6", date: "05/09" },
     { label: "Thứ 7", date: "06/09" },

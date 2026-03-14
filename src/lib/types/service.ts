@@ -10,3 +10,8 @@ export interface SectionData {
   image: string;
   items: ServiceData[];
 }
+
+export interface ServiceSectionProps {
+  section: SectionData;
+  isReversed: boolean;
+}
