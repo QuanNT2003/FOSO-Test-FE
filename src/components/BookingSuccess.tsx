@@ -1,8 +1,10 @@
 import { X, Check, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { BookingSuccessProps } from "@/lib/types/booking";
+import { useTranslation } from "react-i18next";
 
 export function BookingSuccess({ onClose }: BookingSuccessProps) {
+  const { t } = useTranslation();
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -42,12 +44,10 @@ export function BookingSuccess({ onClose }: BookingSuccessProps) {
         {/* Content */}
         <div className="space-y-4 max-w-[540px]">
           <h2 className="text-[32px] text-[#282626] ">
-            Gửi Yêu Cầu Thành Công!
+            {t("booking.book_success")}
           </h2>
           <p className="text-[15px] text-[#715E28] ">
-            Cảm ơn bạn đã đặt dịch vụ tại The OM Lounge. Chúng tôi đã nhận được
-            thông tin đặt lịch từ bạn và sẽ liên hệ lại trong thời gian sớm
-            nhất.
+            {t("booking.book_success_msg")}
           </p>
         </div>
       </div>

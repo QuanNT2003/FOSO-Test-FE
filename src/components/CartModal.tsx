@@ -11,6 +11,7 @@ import { TechnicianService } from "@/lib/services/technician.service";
 import { BookingService } from "@/lib/services/booking.service";
 import { useCart } from "@/lib/contexts/CartContext";
 import { CartItem as CartItemComponent } from "./CartItem";
+import { useTranslation } from "react-i18next";
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [currentView, setCurrentView] = useState<BookingView>("cart");
@@ -24,6 +25,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
     removeItem,
     totalPrice,
   } = useCart();
+  const { t } = useTranslation();
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   useEffect(() => {
@@ -88,7 +90,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
           )}
           {/* Header */}
           <div className="p-6 border-b border-[#E5E1DA] text-center relative bg-[#FAF5EB]">
-            <h2 className="text-[32px] font-serif text-[#824C08]">Giỏ Hàng</h2>
+            <h2 className="text-[32px] font-serif text-[#824C08]">{t("cart.title")}</h2>
             <Button
               onClick={handleClose}
               className="absolute right-6 top-1/2 -translate-y-1/2 text-[#824C08]/60 hover:text-[#824C08] border-none! bg-transparent!"
@@ -104,7 +106,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                 <div className="w-20 h-20 border-2 border-dashed border-current rounded-full flex items-center justify-center">
                   <X size={40} className="rotate-45" />
                 </div>
-                <p className="text-[15px] italic">Giỏ hàng đang trống</p>
+                <p className="text-[15px] italic">{t("cart.empty")}</p>
               </div>
             ) : (
               cartItems.map((item) => (
@@ -125,7 +127,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
             >
               <div className="flex items-center gap-3">
                 <span className="text-[14px] text-[#282626]/40">
-                  Kỹ thuật viên
+                  {t("cart.technician")}
                 </span>
                 {selectedTech && (
                   <div className="flex items-center gap-2">
@@ -148,7 +150,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
 
             <div className="flex items-center justify-between pt-2">
               <span className="text-[16px] text-[#282626]">
-                Tổng thanh toán
+                {t("cart.total")}
               </span>
               <span className="text-[18px] font-bold text-[#E24C4C]">
                 {totalPrice.toLocaleString("vi-VN")} đ
@@ -161,7 +163,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
               className="w-full bg-[#824C08]! hover:bg-[#824C08]/90! text-white h-[56px] rounded-sm flex items-center justify-between px-6 group disabled:opacity-50"
             >
               <span className="text-[15px] font-bold uppercase tracking-widest">
-                Tiếp Tục
+                {t("common.continue")}
               </span>
               <ChevronRight
                 size={20}

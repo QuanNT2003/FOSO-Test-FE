@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { BookingConfirmationProps } from "@/lib/types/booking";
 import { BookingService } from "@/lib/services/booking.service";
+import { useTranslation } from "react-i18next";
 
 export function BookingConfirmation({
   isVisible,
@@ -17,6 +18,7 @@ export function BookingConfirmation({
   cartItems,
   selectedTech,
 }: BookingConfirmationProps) {
+  const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleConfirm = async () => {
@@ -50,7 +52,7 @@ export function BookingConfirmation({
           <ChevronRight size={24} className="rotate-180" />
         </Button>
         <h2 className="text-[24px] font-serif text-[#824C08]">
-          Xác Nhận Đặt Lịch
+          {t("booking.confirmation")}
         </h2>
       </div>
 
@@ -60,7 +62,7 @@ export function BookingConfirmation({
         <div className="space-y-6">
           <div className="space-y-1 border-b border-[#E5E1DA] pb-2">
             <label className="text-[12px] text-[#282626]/40 uppercase tracking-widest">
-              Tên khách hàng
+              {t("booking.customer_name")}
             </label>
             <input
               type="text"
@@ -70,7 +72,7 @@ export function BookingConfirmation({
           </div>
           <div className="space-y-1 border-b border-[#E5E1DA] pb-2">
             <label className="text-[12px] text-[#282626]/40 uppercase tracking-widest">
-              Số điện thoại
+              {t("booking.phone_number")}
             </label>
             <input
               type="text"
@@ -82,7 +84,7 @@ export function BookingConfirmation({
 
         {/* Date Selection */}
         <div className="space-y-4">
-          <h3 className="text-[14px] text-[#282626]/60">Chọn ngày</h3>
+          <h3 className="text-[14px] text-[#282626]/60">{t("booking.select_date")}</h3>
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
             {dates.map((d, idx) => (
               <div
@@ -119,7 +121,7 @@ export function BookingConfirmation({
 
         {/* Time Slots */}
         <div className="space-y-4">
-          <h3 className="text-[14px] text-[#282626]/60">Chọn khung giờ</h3>
+          <h3 className="text-[14px] text-[#282626]/60">{t("booking.select_time")}</h3>
           <div className="grid grid-cols-4 gap-2">
             {timeSlots.map((time, idx) => (
               <div
@@ -151,7 +153,7 @@ export function BookingConfirmation({
           className="w-full bg-[#824C08]! text-white h-[56px] rounded-sm flex items-center justify-center gap-3 group disabled:opacity-50"
         >
           <span className="text-[15px] font-bold uppercase tracking-widest">
-            {isSubmitting ? "Đang xử lý..." : "Đặt Lịch"}
+            {isSubmitting ? t("booking.processing") : t("booking.book_now")}
           </span>
           {!isSubmitting && (
             <ChevronRight

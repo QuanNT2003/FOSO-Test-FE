@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { useCart } from "@/lib/contexts/CartContext";
 import type { ServiceData } from "@/lib/types/service";
+import { useTranslation } from "react-i18next";
 
 const MAIN_SECTIONS = ["combo", "medicure", "pedicure"];
 
@@ -18,6 +19,7 @@ export function EffectTargetModal({
   effectImage,
 }: EffectTargetModalProps) {
   const { cartItems, addVariant } = useCart();
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -51,10 +53,10 @@ export function EffectTargetModal({
           <div className="flex items-center justify-between p-6 border-b border-[#E5E1DA]">
             <div>
               <h3 className="text-[20px] font-serif text-[#824C08]">
-                Thêm Hiệu Ứng
+                {t("cart.add_effect")}
               </h3>
               <p className="text-[13px] text-[#282626]/50 mt-0.5">
-                Chọn dịch vụ sẽ nhận hiệu ứng{" "}
+                {t("cart.select_service")}{" "}
                 <span className="font-semibold text-[#282626]/70">
                   {effectItem.name}
                 </span>
@@ -93,16 +95,16 @@ export function EffectTargetModal({
             {mainItems.length === 0 ? (
               <div className="py-8 text-center text-[#282626]/40">
                 <p className="text-[14px] italic">
-                  Vui lòng thêm dịch vụ chính trước
+                  {t("cart.main_service_required")}
                 </p>
                 <p className="text-[12px] mt-1">
-                  (Combo, Medicure hoặc Pedicure)
+                  {t("cart.main_service_hint")}
                 </p>
               </div>
             ) : (
               <>
                 <p className="text-[12px] uppercase tracking-widest text-[#282626]/40 mb-3">
-                  Chọn dịch vụ
+                  {t("cart.select_service_cta")}
                 </p>
                 {mainItems.map((item) => (
                   <button

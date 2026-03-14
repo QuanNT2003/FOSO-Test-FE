@@ -1,5 +1,6 @@
 import logo from "@/assets/images/logo.png";
 import flower from "@/assets/images/flower.png";
+import { useTranslation } from "react-i18next";
 
 const FacebookIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -29,6 +30,7 @@ const SectionLabel = ({ text }: { text: string }) => (
 );
 
 export function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="relative bg-[#291E0A] pt-[64px] pb-[40px] px-[96px] overflow-hidden">
       {/* Flower Decoration */}
@@ -43,7 +45,7 @@ export function Footer() {
         <div className="flex items-center gap-4">
           <img src={logo} alt="The Om Lounge" className="h-[72px] w-auto" />
           <div className="flex flex-col">
-            <span className="font-serif text-[32px] text-[#E1C084] tracking-[0.1em] uppercase leading-none font-light">
+            <span className="font-serif text-[32px] text-[#E1C084] tracking-widest uppercase leading-none font-light">
               THE OM
             </span>
             <span className="text-[14px] text-[#E1C084]/60 tracking-[0.4em] uppercase">
@@ -56,41 +58,41 @@ export function Footer() {
           <div className="flex flex-col gap-[60px]">
             {/* Sitemap links */}
             <div>
-              <SectionLabel text="SITEMAP" />
+              <SectionLabel text={t("common.footer.sitemap")} />
               <div className="flex flex-col gap-2 font-serif text-[20px] text-[#F5EAD6]">
                 <a href="#home" className="hover:opacity-70 transition-opacity">
-                  Trang chủ
+                  {t("nav.home")}
                 </a>
                 <a
                   href="#about"
                   className="hover:opacity-70 transition-opacity"
                 >
-                  Giới thiệu
+                  {t("nav.about")}
                 </a>
                 <a
                   href="#services"
                   className="hover:opacity-70 transition-opacity"
                 >
-                  Dịch vụ
+                  {t("nav.services")}
                 </a>
               </div>
             </div>
 
             {/* Contact info */}
             <div>
-              <SectionLabel text="LIÊN HỆ" />
+              <SectionLabel text={t("common.footer.contact")} />
               <div className=" space-y-1 text-[#F5EAD6]">
                 <p className="font-semibold text-[14px]">+84 89 812 12 97</p>
                 <p className="text-[14px] leading-relaxed">
                   6 Đường G, Phú Mỹ, Quận 7, TP Hồ Chí Minh
                   <br />
                   <span className="text-[13px] opacity-70 text-[#F5EAD6]">
-                    (gần Crescent Mall)
+                    {t("common.footer.addr_proximity")}
                   </span>
                 </p>
                 <div className="pt-2 text-[13px] opacity-90 leading-relaxed">
-                  <p>Thứ 2 - Thứ 6: &nbsp;&nbsp;09:00 - 19:00</p>
-                  <p>Thứ 7 - Chủ nhật: 09:00 - 20:00</p>
+                  <p>{t("common.footer.weekdays")}: &nbsp;&nbsp;09:00 - 19:00</p>
+                  <p>{t("common.footer.weekends")}: 09:00 - 20:00</p>
                 </div>
               </div>
             </div>
@@ -102,26 +104,26 @@ export function Footer() {
             <div className="w-full flex justify-start pl-[40px] mt-[26px]">
               <div className="flex flex-col gap-2 font-serif text-[20px] text-[#F5EAD6]">
                 <a href="#news" className="hover:opacity-70 transition-opacity">
-                  Tin tức
+                  {t("nav.news")}
                 </a>
                 <a
                   href="#contact"
                   className="hover:opacity-70 transition-opacity "
                 >
-                  Liên hệ
+                  {t("nav.contact")}
                 </a>
               </div>
             </div>
 
             {/* Booking Button */}
             <div className="w-full flex justify-center pt-10">
-              <div className="-rotate-[15deg] transform-gpu">
+              <div className="-rotate-15 transform-gpu">
                 <button
                   style={{ borderRadius: "50% 50% 50% 50% / 50% 50% 50% 50%" }}
-                  className="!border !border-[#E1C084]/60 !bg-transparent w-[180px] h-[85px] flex items-center justify-center text-[#E1C084] text-[15px] font-medium hover:!bg-[#E1C084]/5 transition-all duration-500 cursor-pointer outline-none shadow-none"
+                  className="border! border-[#E1C084]/60! bg-transparent! w-[180px] h-[85px] flex items-center justify-center text-[#E1C084] text-[15px] font-medium hover:bg-[#E1C084]/5! transition-all duration-500 cursor-pointer outline-none shadow-none"
                 >
-                  <span className="rotate-[15deg] block pointer-events-none">
-                    Đặt lịch ngay
+                  <span className="rotate-15 block pointer-events-none">
+                    {t("common.footer.book_now")}
                   </span>
                 </button>
               </div>
@@ -156,7 +158,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="text-[11px] text-[#E1C084]/40 tracking-wider">
-          © 2025 — Copyright The OM Lounge. All rights reserved.
+          © 2025 — Copyright The OM Lounge. {t("common.footer.rights_reserved")}
         </div>
       </div>
     </footer>

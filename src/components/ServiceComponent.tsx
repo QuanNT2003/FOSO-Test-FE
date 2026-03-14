@@ -4,8 +4,10 @@ import bgService from "@/assets/images/bg-service.png";
 import { ServiceSection } from "./ServiceSection";
 import type { SectionData } from "@/lib/types/service";
 import { ServiceService } from "@/lib/services/service.service";
+import { useTranslation } from "react-i18next";
 
 export function ServiceComponent() {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<
     { label: string; href: string }[]
   >([]);
@@ -49,7 +51,7 @@ export function ServiceComponent() {
       <div className="absolute top-[-60px] left-0 w-full z-30 pointer-events-none">
         <div className="text-center">
           <h2 className="text-7xl md:text-[120px] font-serif text-white/95 tracking-tight font-light drop-shadow-lg">
-            Dịch Vụ
+            {t("nav.services")}
           </h2>
         </div>
       </div>
@@ -85,7 +87,8 @@ export function ServiceComponent() {
                           : "text-white/80 hover:text-white"
                       }`}
                     >
-                      {cat.label}
+                      {/* Check if we have a section translation key */}
+                      {t(`sections.${cat.href.replace("#", "")}`, { defaultValue: cat.label })}
                     </a>
                     {idx < categories.length - 1 && (
                       <span className="text-white/40 text-[14px] font-light">
@@ -100,7 +103,7 @@ export function ServiceComponent() {
                 <div className="flex items-center border-b border-white/20 pb-1.5 px-0.5 group focus-within:border-white/50 transition-colors">
                   <input
                     type="text"
-                    placeholder="Tìm kiếm"
+                    placeholder={t("nav.news")} // Or a specific search key if added
                     className="w-full bg-transparent text-white placeholder:text-white/50 focus:outline-none text-[13px] font-light tracking-wide"
                   />
                   <Search className="h-4 w-4 text-white/60 group-focus-within:text-white transition-colors" />

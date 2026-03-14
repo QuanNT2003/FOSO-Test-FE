@@ -1,7 +1,9 @@
 import { ServiceItem } from "./ServiceItem";
 import type { ServiceSectionProps } from "@/lib/types/service";
+import { useTranslation } from "react-i18next";
 
 export function ServiceSection({ section, isReversed }: ServiceSectionProps) {
+  const { t } = useTranslation();
   return (
     <div
       id={section.id}
@@ -22,7 +24,7 @@ export function ServiceSection({ section, isReversed }: ServiceSectionProps) {
       {/* Content Column */}
       <div className="w-full md:w-1/2 flex flex-col gap-10">
         <h3 className="text-[64px] font-serif text-[#E1C084] font-light tracking-wide">
-          {section.title}
+          {t(`sections.${section.id}`, { defaultValue: section.title })}
         </h3>
         <div className="flex flex-col gap-6">
           {section.items.map((item, idx) => (

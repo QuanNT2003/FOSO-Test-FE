@@ -1,6 +1,8 @@
 import bgAppointment from "@/assets/images/bg-comment.png";
+import { useTranslation } from "react-i18next";
 
 export function AppointmentComponent() {
+  const { t } = useTranslation();
   return (
     <section className="relative w-full h-[600px] overflow-hidden flex items-center justify-center text-center">
       {/* Background Image */}
@@ -20,11 +22,10 @@ export function AppointmentComponent() {
       {/* Content */}
       <div className="relative z-10 max-w-4xl px-4 flex flex-col items-center gap-6">
         <h2 className="text-white text-[64px] font-serif leading-tight">
-          Đặt lịch hẹn chữa lành
+          {t("appointment.title")}
         </h2>
         <p className="text-white/80 text-lg max-w-2xl leading-relaxed">
-          Đến The OM Lounge để xả stress và làm mới mình. Vẻ đẹp bắt đầu từ những
-          điều nhỏ nhất và lan tỏa đến cả tâm hồn.
+          {t("appointment.description")}
         </p>
         <button 
           onClick={() => {
@@ -33,7 +34,7 @@ export function AppointmentComponent() {
           }}
           className="mt-4 bg-white text-[#523C14] px-10 py-4 font-semibold uppercase tracking-widest hover:bg-white/90 transition-all duration-300 rounded-none cursor-pointer"
         >
-          Trải nghiệm ngay
+          {t("appointment.cta")}
         </button>
       </div>
     </section>

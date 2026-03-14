@@ -1,6 +1,7 @@
 import { Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { TechnicianSelectionProps } from "@/lib/types/booking";
+import { useTranslation } from "react-i18next";
 
 export function TechnicianSelection({
   isVisible,
@@ -11,6 +12,7 @@ export function TechnicianSelection({
   onSelect,
   onConfirm,
 }: TechnicianSelectionProps) {
+  const { t } = useTranslation();
   return (
     <div
       className={`absolute inset-0 flex flex-col w-[450px] h-full bg-[#FAF5EB] transition-transform duration-300 ${
@@ -29,7 +31,7 @@ export function TechnicianSelection({
         >
           <ChevronRight size={24} className="rotate-180" />
         </Button>
-        <h2 className="text-[24px] font-serif text-[#824C08]">Chọn nhân viên</h2>
+        <h2 className="text-[24px] font-serif text-[#824C08]">{t("booking.select_tech")}</h2>
       </div>
 
       {/* List of Technicians */}
@@ -69,7 +71,7 @@ export function TechnicianSelection({
           onClick={onConfirm}
           className="w-full bg-[#824C08]! text-white h-[50px] rounded-sm font-bold uppercase tracking-widest"
         >
-          Xác nhận
+          {t("common.confirm")}
         </Button>
       </div>
     </div>

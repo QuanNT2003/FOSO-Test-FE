@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "services": "Dịch vụ",
+    "news": "Tin tức",
+    "contact": "Liên hệ"
+  },
+  "common": {
+    "cart": "Giỏ hàng",
+    "continue": "Tiếp Tục",
+    "back": "Quay lại",
+    "confirm": "Xác nhận",
+    "success": "Thành công",
+    "footer": {
+      "sitemap": "SITEMAP",
+      "contact": "LIÊN HỆ",
+      "book_now": "Đặt lịch ngay",
+      "rights_reserved": "All rights reserved.",
+      "addr_proximity": "(gần Crescent Mall)",
+      "weekdays": "Thứ 2 - Thứ 6",
+      "weekends": "Thứ 7 - Chủ nhật"
+    }
+  },
+  "cart": {
+    "title": "Giỏ Hàng",
+    "empty": "Giỏ hàng đang trống",
+    "technician": "Kỹ thuật viên",
+    "total": "Tổng thanh toán",
+    "add_effect": "Thêm Hiệu Ứng",
+    "select_service": "Chọn dịch vụ sẽ nhận hiệu ứng",
+    "select_service_cta": "Chọn dịch vụ",
+    "main_service_required": "Vui lòng thêm dịch vụ chính trước",
+    "main_service_hint": "(Combo, Medicure hoặc Pedicure)"
+  },
+  "booking": {
+    "confirmation": "Xác Nhận Đặt Lịch",
+    "customer_name": "Tên khách hàng",
+    "phone_number": "Số điện thoại",
+    "select_date": "Chọn ngày",
+    "select_time": "Chọn khung giờ",
+    "select_tech": "Chọn nhân viên",
+    "processing": "Đang xử lý...",
+    "book_now": "Đặt Lịch",
+    "date": "Ngày",
+    "time": "Giờ",
+    "tech": "Kỹ thuật viên",
+    "details": "Chi tiết đặt lịch",
+    "book_success": "Gửi Yêu Cầu Thành Công!",
+    "book_success_msg": "Cảm ơn bạn đã đặt dịch vụ tại The OM Lounge. Chúng tôi đã nhận được thông tin đặt lịch từ bạn và sẽ liên hệ lại trong thời gian sớm nhất."
+  },
+  "appointment": {
+    "title": "Đặt lịch hẹn chữa lành",
+    "description": "Đến The OM Lounge để xả stress và làm mới mình. Vẻ đẹp bắt đầu từ những điều nhỏ nhất và lan tỏa đến cả tâm hồn.",
+    "cta": "Trải nghiệm ngay"
+  },
+  "testimonial": {
+    "subtitle": "NHẬN XÉT TỪ",
+    "title": "Khách Hàng",
+    "empty": "Hiện chưa có nhận xét nào."
+  },
+  "sections": {
+    "combo": "Gói Combo",
+    "medicure": "Medicure",
+    "pedicure": "Pedicure",
+    "effect": "Hiệu Ứng",
+    "drinks": "Drinks"
+  }
+}

@@ -3,8 +3,10 @@ import { TestimonialItem } from "./TestimonialItem";
 import type { TestimonialData } from "@/lib/types/testimonial";
 import { TestimonialService } from "@/lib/services/testimonial.service";
 import bgComment from "@/assets/images/bg-service.png";
+import { useTranslation } from "react-i18next";
 
 export function TestimonialComponent() {
+  const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState(0);
   const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,10 +47,10 @@ export function TestimonialComponent() {
         {/* Section Header */}
         <div className="text-center mb-20">
           <span className="text-white text-[24px] uppercase tracking-[0.5em]">
-            NHẬN XÉT TỪ
+            {t("testimonial.subtitle")}
           </span>
           <h2 className="text-[64px] font-serif text-white font-normal mt-4">
-            Khách Hàng
+            {t("testimonial.title")}
           </h2>
         </div>
 
@@ -60,7 +62,7 @@ export function TestimonialComponent() {
             </div>
           ) : testimonials.length === 0 ? (
             <div className="w-full text-center text-white/60 py-20">
-              No testimonials available at this time.
+              {t("testimonial.empty")}
             </div>
           ) : (
             <div

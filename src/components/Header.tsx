@@ -5,6 +5,7 @@ import logo from "@/assets/images/logo.png";
 import bgHeader from "@/assets/images/bg-header.png";
 import { CartModal } from "./CartModal";
 import { useCart } from "@/lib/contexts/CartContext";
+import { useTranslation } from "react-i18next";
 
 const CartButton = ({
   isSticky = false,
@@ -16,13 +17,16 @@ const CartButton = ({
   onClick: () => void;
 }) => {
   const { itemCount } = useCart();
-  
+  const { t } = useTranslation();
+
   return (
     <Button
       variant="ghost"
       onClick={onClick}
       className={`${
-        isCartOpen ? "bg-[#FCE48C]! text-[#824C08]!" : "bg-[#824C08]! text-white!"
+        isCartOpen
+          ? "bg-[#FCE48C]! text-[#824C08]!"
+          : "bg-[#824C08]! text-white!"
       } hover:opacity-90 rounded-md px-4 py-2 flex items-center gap-2 border-none transition-colors ${
         isSticky ? "h-9 min-w-[140px]" : "px-5 py-3 h-12 min-w-[193px]"
       }`}
@@ -35,7 +39,7 @@ const CartButton = ({
           isSticky ? "text-[10px]" : "text-[11px]"
         } uppercase tracking-widest font-bold`}
       >
-        Giỏ hàng
+        {t("common.cart")}
       </span>
       <span
         className={`${
@@ -49,9 +53,15 @@ const CartButton = ({
 };
 
 export function Header() {
+  const { t, i18n } = useTranslation();
   const [activeHash, setActiveHash] = useState(window.location.hash || "#home");
   const [isSticky, setIsSticky] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === "vi" ? "en" : "vi";
+    i18n.changeLanguage(newLang);
+  };
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -76,11 +86,11 @@ export function Header() {
   }, []);
 
   const navItems = [
-    { href: "#home", label: "Trang chủ" },
-    { href: "#about", label: "Giới thiệu" },
-    { href: "#services", label: "Dịch vụ" },
-    { href: "#news", label: "Tin tức" },
-    { href: "#contact", label: "Liên hệ" },
+    { href: "#home", label: t("nav.home") },
+    { href: "#about", label: t("nav.about") },
+    { href: "#services", label: t("nav.services") },
+    { href: "#news", label: t("nav.news") },
+    { href: "#contact", label: t("nav.contact") },
   ];
 
   return (
@@ -94,7 +104,7 @@ export function Header() {
         <div className="max-w-[1400px] mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logo} alt="The Om Lounge" className="h-10 w-auto" />
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-center">
               <span className="text-[18px] font-serif tracking-widest uppercase text-white leading-none">
                 The Om
               </span>
@@ -120,8 +130,11 @@ export function Header() {
           </nav>
           <div className="flex items-center gap-14">
             <div className="">
-              <span className="text-[11px] uppercase tracking-[0.3em] font-semibold text-white/80 cursor-pointer hover:text-white transition-colors">
-                English
+              <span
+                onClick={toggleLanguage}
+                className="text-[11px] uppercase tracking-[0.3em] font-semibold text-white/80 cursor-pointer hover:text-white transition-colors"
+              >
+                {i18n.language === "vi" ? "English" : "Tiếng Việt"}
               </span>
             </div>
             <CartButton
@@ -152,8 +165,11 @@ export function Header() {
           <div className="flex items-center justify-between mb-8">
             {/* Left: Language */}
             <div className="w-1/4">
-              <span className="text-[11px] uppercase tracking-[0.3em] font-semibold text-white/80 cursor-pointer hover:text-white transition-colors">
-                English
+              <span
+                onClick={toggleLanguage}
+                className="text-[11px] uppercase tracking-[0.3em] font-semibold text-white/80 cursor-pointer hover:text-white transition-colors"
+              >
+                {i18n.language === "vi" ? "English" : "Tiếng Việt"}
               </span>
             </div>
 
