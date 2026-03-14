@@ -134,7 +134,7 @@ export function Header() {
                 onClick={toggleLanguage}
                 className="text-[11px] uppercase tracking-[0.3em] font-semibold text-white/80 cursor-pointer hover:text-white transition-colors"
               >
-                {i18n.language === "vi" ? "English" : "Tiếng Việt"}
+                {i18n.language === "en" ? "English" : "Tiếng Việt"}
               </span>
             </div>
             <CartButton
@@ -169,7 +169,7 @@ export function Header() {
                 onClick={toggleLanguage}
                 className="text-[11px] uppercase tracking-[0.3em] font-semibold text-white/80 cursor-pointer hover:text-white transition-colors"
               >
-                {i18n.language === "vi" ? "English" : "Tiếng Việt"}
+                {i18n.language === "en" ? "English" : "Tiếng Việt"}
               </span>
             </div>
 
