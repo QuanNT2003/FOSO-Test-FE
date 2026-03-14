@@ -13,7 +13,20 @@ export interface CartItem {
   variants?: CartItemVariant[];
 }
 
+export interface CartItemProps {
+  item: CartItem;
+  onRemove: (id: string) => void;
+}
+
 export interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+export interface CartContextType {
+  cartItems: CartItem[];
+  isLoading: boolean;
+  removeItem: (id: string) => void;
+  totalPrice: number;
+  itemCount: number;
 }

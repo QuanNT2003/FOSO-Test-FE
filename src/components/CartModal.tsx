@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
-import { X, Minus, Plus, ChevronRight } from "lucide-react";
+import { X, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TechnicianSelection } from "./TechnicianSelection";
 import { BookingConfirmation } from "./BookingConfirmation";
 import { BookingSuccess } from "./BookingSuccess";
-import type { CartItem, CartModalProps } from "@/lib/types/cart";
+import type { CartModalProps } from "@/lib/types/cart";
 import type { Technician } from "@/lib/types/technician";
 import type { BookingDate, BookingView } from "@/lib/types/booking";
 import { TechnicianService } from "@/lib/services/technician.service";
 import { BookingService } from "@/lib/services/booking.service";
+import { useCart } from "@/lib/contexts/CartContext";
+import { CartItem as CartItemComponent } from "./CartItem";
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [currentView, setCurrentView] = useState<BookingView>("cart");
@@ -16,7 +18,8 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [dates, setDates] = useState<BookingDate[]>([]);
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
   const [selectedTech, setSelectedTech] = useState<Technician | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { cartItems, isLoading: isCartLoading, removeItem, totalPrice } = useCart();
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   useEffect(() => {
     const fetchBookingData = async () => {
@@ -36,7 +39,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
       } catch (error) {
         console.error("Failed to fetch booking data:", error);
       } finally {
-        setIsLoading(false);
+        setIsDataLoading(false);
       }
     };
 
@@ -48,53 +51,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
   const [bookingDate, setBookingDate] = useState("Thứ 7 06/09");
   const [bookingTime, setBookingTime] = useState("10:00 AM");
 
-  const cartItems: CartItem[] = [
-    {
-      id: "1",
-      name: "Sơn gel",
-      price: 264000,
-      image:
-        "https://images.unsplash.com/photo-1604654894611-6973b376cbde?q=80&w=200&auto=format&fit=crop",
-      duration: "10 phút",
-      variants: [
-        {
-          image:
-            "https://images.unsplash.com/photo-1604654894611-6973b376cbde?q=80&w=200&auto=format&fit=crop",
-          name: "Da beo",
-          quantity: 1,
-        },
-        {
-          image:
-            "https://images.unsplash.com/photo-1604654894611-6973b376cbde?q=80&w=200&auto=format&fit=crop",
-          name: "Da beo",
-          quantity: 2,
-        },
-      ],
-    },
-    {
-      id: "2",
-      name: "Mắt mèo",
-      price: 88000,
-      image:
-        "https://images.unsplash.com/photo-1604654894611-6973b376cbde?q=80&w=200&auto=format&fit=crop",
-    },
-    {
-      id: "3",
-      name: "Sơn nhũ",
-      price: 88000,
-      image:
-        "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?q=80&w=200&auto=format&fit=crop",
-      duration: "10 phút",
-    },
-    {
-      id: "4",
-      name: "Sơn gel",
-      price: 88000,
-      image:
-        "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?q=80&w=200&auto=format&fit=crop",
-      duration: "10 phút",
-    },
-  ];
+  const isLoading = isCartLoading || isDataLoading;
 
   if (!isOpen) return null;
 
@@ -137,71 +94,22 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-thin scrollbar-thumb-[#E5E1DA]">
-            {cartItems.map((item) => (
-              <div key={item.id} className="relative">
-                <div className="flex gap-6">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-24 h-24 object-cover rounded-sm shadow-sm"
-                  />
-                  <div className="flex-1 space-y-1">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-[15px] font-bold text-[#282626]">
-                        {item.name}
-                      </h3>
-                      <Button className="text-[#282626]/20 hover:text-[#282626]/40 border-none! bg-transparent! ">
-                        <X size={16} />
-                      </Button>
-                    </div>
-                    <div className="text-[14px] text-[#282626]/60">
-                      {item.price.toLocaleString("vi-VN")} đ
-                    </div>
-                    {item.duration && (
-                      <div className="text-[12px] text-[#282626]/40 flex items-center gap-1">
-                        <span className="w-3 h-3 border border-current rounded-full flex items-center justify-center text-[8px]">
-                          i
-                        </span>
-                        {item.duration}
-                      </div>
-                    )}
-                  </div>
+            {cartItems.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-[#824C08]/40 space-y-4">
+                <div className="w-20 h-20 border-2 border-dashed border-current rounded-full flex items-center justify-center">
+                  <X size={40} className="rotate-45" />
                 </div>
-                {item.variants && (
-                  <div className="mt-4 space-y-4 ms-14">
-                    {item.variants.map((v, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between"
-                      >
-                        <img
-                          src={v.image}
-                          alt={v.name}
-                          className="w-10 h-10 object-cover rounded-sm shadow-sm"
-                        />
-                        <span className="text-[13px] text-[#282626]/60">
-                          Hiệu ứng:{" "}
-                          <span className="font-bold text-[#282626]">
-                            {v.name}
-                          </span>
-                        </span>
-                        <div className="flex items-center border border-[#E5E1DA] rounded-full px-3 py-1 gap-4">
-                          <div className="text-[#282626]/40 hover:text-[#282626] cursor-pointer">
-                            <Minus size={14} />
-                          </div>
-                          <span className="text-[14px] font-medium w-4 text-center">
-                            {v.quantity}
-                          </span>
-                          <div className="text-[#282626]/40 hover:text-[#282626] cursor-pointer">
-                            <Plus size={14} />
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <p className="text-[15px] italic">Giỏ hàng đang trống</p>
               </div>
-            ))}
+            ) : (
+              cartItems.map((item) => (
+                <CartItemComponent 
+                  key={item.id} 
+                  item={item} 
+                  onRemove={removeItem} 
+                />
+              ))
+            )}
           </div>
 
           {/* Bottom Section */}
@@ -238,13 +146,14 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                 Tổng thanh toán
               </span>
               <span className="text-[18px] font-bold text-[#E24C4C]">
-                440,000 đ
+                {totalPrice.toLocaleString("vi-VN")} đ
               </span>
             </div>
 
             <Button
               onClick={() => setCurrentView("confirmation")}
-              className="w-full bg-[#824C08]! hover:bg-[#824C08]/90! text-white h-[56px] rounded-sm flex items-center justify-between px-6 group"
+              disabled={cartItems.length === 0}
+              className="w-full bg-[#824C08]! hover:bg-[#824C08]/90! text-white h-[56px] rounded-sm flex items-center justify-between px-6 group disabled:opacity-50"
             >
               <span className="text-[15px] font-bold uppercase tracking-widest">
                 Tiếp Tục

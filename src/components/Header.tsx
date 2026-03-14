@@ -4,6 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import logo from "@/assets/images/logo.png";
 import bgHeader from "@/assets/images/bg-header.png";
 import { CartModal } from "./CartModal";
+import { useCart } from "@/lib/contexts/CartContext";
 
 const CartButton = ({
   isSticky = false,
@@ -13,35 +14,39 @@ const CartButton = ({
   isSticky?: boolean;
   isCartOpen?: boolean;
   onClick: () => void;
-}) => (
-  <Button
-    variant="ghost"
-    onClick={onClick}
-    className={`${
-      isCartOpen ? "bg-[#FCE48C]! text-[#824C08]!" : "bg-[#824C08]! text-white!"
-    } hover:opacity-90 rounded-md px-4 py-2 flex items-center gap-2 border-none transition-colors ${
-      isSticky ? "h-9 min-w-[140px]" : "px-5 py-3 h-12 min-w-[193px]"
-    }`}
-  >
-    <ShoppingCart
-      className={`h-4 w-4 ${isCartOpen ? "text-[#824C08]" : "text-white"}`}
-    />
-    <span
+}) => {
+  const { itemCount } = useCart();
+  
+  return (
+    <Button
+      variant="ghost"
+      onClick={onClick}
       className={`${
-        isSticky ? "text-[10px]" : "text-[11px]"
-      } uppercase tracking-widest font-bold`}
+        isCartOpen ? "bg-[#FCE48C]! text-[#824C08]!" : "bg-[#824C08]! text-white!"
+      } hover:opacity-90 rounded-md px-4 py-2 flex items-center gap-2 border-none transition-colors ${
+        isSticky ? "h-9 min-w-[140px]" : "px-5 py-3 h-12 min-w-[193px]"
+      }`}
     >
-      Giỏ hàng
-    </span>
-    <span
-      className={`${
-        isCartOpen ? "bg-[#824C08] text-white" : "bg-white text-[#824C08]"
-      } w-4 h-4 rounded-full text-[9px] flex items-center justify-center font-bold`}
-    >
-      3
-    </span>
-  </Button>
-);
+      <ShoppingCart
+        className={`h-4 w-4 ${isCartOpen ? "text-[#824C08]" : "text-white"}`}
+      />
+      <span
+        className={`${
+          isSticky ? "text-[10px]" : "text-[11px]"
+        } uppercase tracking-widest font-bold`}
+      >
+        Giỏ hàng
+      </span>
+      <span
+        className={`${
+          isCartOpen ? "bg-[#824C08] text-white" : "bg-white text-[#824C08]"
+        } w-4 h-4 rounded-full text-[9px] flex items-center justify-center font-bold`}
+      >
+        {itemCount}
+      </span>
+    </Button>
+  );
+};
 
 export function Header() {
   const [activeHash, setActiveHash] = useState(window.location.hash || "#home");
